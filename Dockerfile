@@ -1,44 +1,29 @@
-FROM ubuntu
+# Use an official Node.js runtime as a parent image
+FROM node:14
 
-# Ubuntu init
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install wget xz-utils inotify-tools -y
-RUN apt-get autoremove -y
-
-# Install node js
-RUN mkdir /downloads
-WORKDIR /downloads
-RUN wget https://nodejs.org/dist/v14.15.5/node-v14.15.5-linux-x64.tar.xz
-RUN ls -lt
-RUN tar -xf 'node-v14.15.5-linux-x64.tar.xz'
-ENV PATH=/downloads/node-v14.15.5-linux-x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-# Create the npm package.json
-WORKDIR /
-RUN mkdir /work
+# Set the working directory in the container
 WORKDIR /work
-RUN npm set init.name "styles"
-RUN npm init --yes
-RUN ls
 
-# Install tailwindcss
-RUN npm install -g npm@latest
-RUN npm install -g tailwindcss@latest tailwindcss-cli@latest postcss@latest autoprefixer@latest clean-css-cli@latest npm-run@latest
-ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/work/node_modules/clean-css-cli/bin:/downloads/node-v14.15.5-linux-x64/bin
+# Install necessary tools and packages
+
+
+# Install tailwindcss and other npm packages globally
+RUN npm install --global tailwindcss@1.9.6 tailwindcss-cli@latest postcss@8.4.14 autoprefixer@9.8.8 clean-css-cli@5.5.0 npm-run@latest
+
+# Copy necessary files into the container
 COPY package.json .
 COPY postcss.config.js .
 COPY prod.sh .
 
-## For some reason we have to run this to get it to install properly
+# Install tailwindcss-cli globally (if needed)
 RUN npx tailwindcss-cli@latest
 
-## Where the input tailwind.css file can be found
+# Where the input tailwind.css file can be found
 VOLUME /work/input
 
-## Where the final css will be output
+# Where the final CSS will be output
 VOLUME /work/output
 
-## Where post css will search for src to remove unused tailwind bits
-## Point this to the root of your base app (it looks in source_code/src/**/*.rs and source_code/index.html
+# Where postcss will search for src to remove unused tailwind bits
+# Point this to the root of your base app
 VOLUME /work/source_code
