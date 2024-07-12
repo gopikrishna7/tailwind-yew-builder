@@ -8,7 +8,7 @@ WORKDIR /work
 
 
 # Install tailwindcss and other npm packages globally
-RUN npm install --global tailwindcss@1.9.6 tailwindcss-cli@latest postcss@8.4.14 autoprefixer@9.8.8 clean-css-cli@5.5.0 npm-run@latest pg-promise@4.8.1 express@4.13.4 morgan@1.6.1
+RUN npm install --global tailwindcss@1.9.6 tailwindcss-cli@latest postcss@8.4.14 autoprefixer@9.8.8 clean-css-cli@5.5.0 npm-run@latest pg-promise@4.8.1 express@4.13.4 pdfkit@0.11.0 sanitize-html@1.4.2 socket.io@3.1.2
 
 # Copy necessary files into the container
 COPY package.json .
