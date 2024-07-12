@@ -16,7 +16,6 @@ COPY postcss.config.js .
 COPY prod.sh .
 
 # Install tailwindcss-cli globally (if needed)
-RUN npx tailwindcss-cli@latest
 
 # Where the input tailwind.css file can be found
 VOLUME /work/input
